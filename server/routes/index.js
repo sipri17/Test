@@ -10,5 +10,6 @@ router.get("/company", Controller.showCompanies)
 router.post("/company", Controller.addCompany)
 router.post("/transaction", Controller.addTransaction)
 router.get("/transaction", Controller.showAllTransaction)
+router.get("/item", Controller.showItems)
 
 module.exports = router
