@@ -46,6 +46,15 @@ class Controller {
         }
     }
 
+    static async showItems(req, res, next) {
+        try {
+            const items = await Item.findAll()
+            res.status(200).json(items)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     static async addTransaction(req, res, next) {
         try {
             const { companyId, itemId, totalItem } = req.body
@@ -75,9 +84,14 @@ class Controller {
             })
 
             let dataCSV = "Tanggal Input|Nama Perusahaan|Nama Barang|Total Barang|Harga Barang|Grand Total|Sisa Barang" + "\n" + result.map(e=>e.join("|")).join("\n")
+
+            const newTransactions = transactions.map(el=>{
+                el.dataValues.tanggalInput = el.createdAt.toLocaleDateString('en-GB').split('/').join('-')
+                return el
+            })
         
 
-            res.status(200).send(dataCSV)
+            res.status(200).json(newTransactions)
         } catch (error) {
             next(error)
         }
