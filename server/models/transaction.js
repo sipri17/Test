@@ -11,14 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Transaction.belongsTo(models.Company,{foreignKey : companyId})
-      Transaction.belongsTo(models.Users,{foreignKey : authorId})
+      Transaction.belongsTo(models.Company,{foreignKey : "companyId"})
+      Transaction.belongsTo(models.User,{foreignKey : "authorId"})
+      Transaction.belongsTo(models.Item,{foreignKey : "itemId"})
 
     }
   }
   Transaction.init({
     companyId: DataTypes.INTEGER,
-    itemName: DataTypes.STRING,
+    itemId: DataTypes.INTEGER,
     totalItem: DataTypes.INTEGER,
     authorId: DataTypes.INTEGER
   }, {

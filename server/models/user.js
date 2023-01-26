@@ -1,7 +1,11 @@
 'use strict';
+
+
+
 const {
   Model
 } = require('sequelize');
+const { generateHash } = require('../helpers');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,15 +15,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Transaction)
+      User.hasMany(models.Transaction,{foreignKey : "authorId"})
     }
   }
   User.init({
-    username: DataTypes.STRING,
-    password: DataTypes.STRING
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'Username is required' },
+        notEmpty: { msg: 'Username is required' }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'Password is required' },
+        notEmpty: { msg: 'Password is required' }        
+      }
+    }
   }, {
     sequelize,
     modelName: 'User',
   });
+
+  User.addHook('beforeCreate', (user, options) => {
+    user.password = generateHash(user.password)
+  });
+
   return User;
 };

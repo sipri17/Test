@@ -1,8 +1,10 @@
 'use strict';
 
+const { generateHash } = require('../helpers');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -12,29 +14,29 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    const data = [{
-      name: "Perusahaan A",
-      companyCode: "A-101",
+   const data = [{
+      username: "Admin1",
+      password : generateHash("test1"),
       createdAt : new Date(),
       updatedAt : new Date()
     }, {
-      name: "Perusahaan B",
-      companyCode: "B-102",
+      username: "Admin2",
+      password : generateHash("test2"),
       createdAt : new Date(),
       updatedAt : new Date()
     }]
 
-    await queryInterface.bulkInsert('Companies', data);
+    await queryInterface.bulkInsert('Users', data);
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('Companies', {}, {
+    await queryInterface.bulkDelete('Users', {}, {
       truncate: true, restartIdentity: true, cascade: true
     });
 
